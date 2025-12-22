@@ -325,17 +325,7 @@ Positive       383      4617     (True Pos Rate: 92.3%)
 
 ## 9. PHỤ LỤC
 
-### 9.1. Hạ tầng và môi trường
-- CPU: Intel Core i7 / AMD Ryzen 7
-- RAM: 16–32 GB
-- GPU: NVIDIA RTX 3060/3070 (cho BiLSTM/DistilBERT)
-- Python: 3.8+
-- PyTorch: 2.0+
-- Transformers: 4.30+
-- scikit‑learn: 1.3+
-- CUDA: 11.8+
-
-### 9.2. Cấu trúc thư mục
+### 9.1. Cấu trúc thư mục
 ```
 project/
 ├── data/
