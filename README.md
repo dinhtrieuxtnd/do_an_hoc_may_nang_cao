@@ -110,7 +110,7 @@ Thông số: embed_dim=256, hidden_dim=256 (hai chiều → 512), vocab≈50K, m
 Pipeline xây dựng mô hình BiLSTM (chi tiết):
 1. Chuẩn bị dữ liệu và từ điển: lọc theo tần suất tối thiểu, cố định `max_len`, ánh xạ từ → chỉ số; lưu `word2idx`/`idx2word` để phục vụ suy luận.
 2. Mã hóa chuỗi: tokenization theo từ, cắt/tràn về 256, padding phía sau; tạo `attention_mask` (nếu cần) để phân biệt vùng pad với vùng thực.
-3. DataLoader: thiết kế collate function chuẩn hoá batch (tensor hóa chuỗi, nhãn), đảm bảo các batch có kích thước ổn định; cân nhắc `pin_memory` khi dùng GPU.
+3. DataLoader: thiết kế collate function chuẩn hoá batch (tensor hóa chuỗi, nhãn), đảm bảo các batch có kích thước ổn định.
 4. Khởi tạo embedding: ngẫu nhiên với phân phối đều, hoặc nạp tiền huấn luyện (GloVe/FastText) nếu có; thiết lập `padding_idx` để không tham gia cập nhật trọng số.
 5. Mô hình hai chiều: LSTM forward/backward, ghép đặc trưng; pooling đa dạng (max/mean/last hidden) để tận dụng thông tin vị trí và tổng thể.
 6. Tối ưu hóa: dùng Adam, weight decay để giảm overfit; áp dụng gradient clipping khi chuỗi dài; cân nhắc label smoothing nhẹ.
