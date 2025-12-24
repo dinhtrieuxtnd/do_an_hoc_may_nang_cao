@@ -1,18 +1,7 @@
-# BÁO CÁO ĐỒ ÁN
-# PHÂN LOẠI CẢM XÚC VĂN BẢN SỬ DỤNG MẠNG BILSTM VỚI CHIẾN LƯỢC MULTI-POOLING
+# BÁO CÁO BTL
+# PHÂN LOẠI CẢM XÚC QUA VĂN BẢN MÃ HÓA SỬ DỤNG MẠNG BILSTM
 
-**Sinh viên thực hiện:** [Họ và tên]  
-**MSSV:** [Mã số sinh viên]  
-**Lớp:** [Tên lớp]  
-**Giảng viên hướng dẫn:** [Tên giảng viên]
-
-**Môn học:** Advanced Machine Learning  
-**Học kỳ:** HK1 2025-2026  
-**Ngày hoàn thành:** 20/12/2025
-
----
-
-## MỨC LỤC
+## MỤC LỤC
 
 1. [GIỚI THIỆU](#chương-1-giới-thiệu)
 2. [CƠ SỞ LÝ THUYẾT](#chương-2-cơ-sở-lý-thuyết)
@@ -28,7 +17,7 @@
 
 Phân loại cảm xúc (sentiment analysis) là một trong những bài toán quan trọng trong xử lý ngôn ngữ tự nhiên với nhiều ứng dụng thực tế như phân tích đánh giá sản phẩm, giám sát dư luận mạng xã hội, và hệ thống khuyến nghị. Báo cáo này trình bày việc xây dựng và đánh giá mô hình Bidirectional Long Short-Term Memory (BiLSTM) kết hợp với chiến lược multi-pooling để phân loại cảm xúc văn bản thành hai lớp: positive và negative.
 
-Nghiên cứu sử dụng dataset gồm 69,995 đánh giá, được chia thành train set (80%) và test set (20%). Để tăng cường dữ liệu huấn luyện, chúng tôi áp dụng kỹ thuật back translation [Edunov et al., 2018] với hai ngôn ngữ trung gian (German và French), tăng train set lên 59,995 mẫu (+7.14%). Mô hình BiLSTM được thiết kế với embedding layer 256 chiều, LSTM layer hai chiều với hidden dimension 512, và multi-pooling strategy kết hợp max pooling, mean pooling, và last hidden states [Wang et al., 2016].
+Nghiên cứu sử dụng dataset gồm 69,995 đánh giá, được chia thành train set (80%) và test set (20%). Để tăng cường dữ liệu huấn luyện, chúng tôi áp dụng kỹ thuật back translation [Edunov et al., 2018] với hai ngôn ngữ trung gian (German và French), tăng train set lên 59,995 mẫu. Mô hình BiLSTM được thiết kế với embedding layer 256 chiều, LSTM layer hai chiều với hidden dimension 512, và multi-pooling strategy kết hợp max pooling, mean pooling, và last hidden states [Wang et al., 2016].
 
 Kết quả thực nghiệm cho thấy mô hình đạt **Test Macro-F1 Score 88.33%** và **Test Accuracy 88.33%** trên tập test, với sự cân bằng tốt giữa precision và recall cho cả hai lớp. Khoảng cách giữa validation F1 (89.77%) và test F1 (88.33%) chỉ 1.44%, chứng tỏ khả năng tổng quát hóa tốt của mô hình. Các kỹ thuật regularization như dropout (0.35), weight decay (1e-4), gradient clipping (0.5), và label smoothing (0.1) đã hiệu quả trong việc giảm overfitting.
 
@@ -422,22 +411,22 @@ Prechelt [1998] chứng minh **early stopping** là effective regularization:
 ## 3.1. Dataset
 
 ### 3.1.1. Mô Tả Dataset
-- **Tổng số mẫu:** 69,995 samples
+- **Tổng số mẫu:** 50,000 samples
 - **Phân phối nhãn:**
-  - Negative: 34,998 samples
-  - Positive: 34,997 samples
-- **Nguồn dữ liệu:** `dataset.csv`
+  - Negative: 25,000 samples
+  - Positive: 25,000 samples
+- **Nguồn dữ liệu:** `dataset.csv` từ IMDB dataset trên kaggle
 
 ### 2.2. Chia Train/Test Set
 Sử dụng **stratified train-test split** [Kohavi, 1995] để đảm bảo phân phối nhãn trong train và test sets giống nhau:
 
 **Configuration:**
-- **Train Set:** 80% (55,996 samples)
-  - Negative: 27,998 samples
-  - Positive: 27,998 samples
-- **Test Set:** 20% (13,999 samples)
-  - Negative: 6,999 samples  
-  - Positive: 7,000 samples
+- **Train Set:** 80% (40000 samples)
+  - Negative: 25,000 samples
+  - Positive: 25,000 samples
+- **Test Set:** 20% (10,000 samples)
+  - Negative: 5,000 samples  
+  - Positive: 5,000 samples
 - **Method:** `train_test_split` với `stratify=y`
 - **Random seed:** 42 (reproducibility)
 
@@ -468,13 +457,13 @@ Sử dụng **stratified train-test split** [Kohavi, 1995] để đảm bảo ph
 ### 3.2. Kết Quả Augmentation
 
 **Train Set sau augmentation:**
-- **Original train:** 55,996 samples
-- **Augmented:** ~28,000 samples (Back Translation)
-- **Total train:** 59,995 samples (tăng 7.14% so với ban đầu)
+- **Original train:** 40,000 samples
+- **Augmented:** 19,995 samples (Back Translation)
+- **Total train:** 59,995 samples
 
 **Phân phối sau augmentation:**
-- Negative: ~30,000 samples (50%)
-- Positive: ~30,000 samples (50%)
+- Negative: 30,000 samples
+- Positive: 29,995 samples
 
 **Test Set:**
 - **Giữ nguyên:** 10,000 samples (không augment)
