@@ -12,8 +12,7 @@ ENV/
 .ipynb_checkpoints
 
 # Data files
-data/archive.zip
-data/*.zip
+data/*.csv
 *.npy
 
 # Model files
